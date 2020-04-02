@@ -1,0 +1,117 @@
+<header>
+    <div class="container p-0">
+        <nav class="navbar navbar-expand-lg navbar-light bg-info">
+            <a class="navbar-brand" style="color: #fff;" [routerLink]="['/dashboard']">Home</a>
+            <a _ngcontent-apm-c1="" class="navbar-brand" style="color: #fff;position: absolute;right: 0;" (click)="logout()">Logout</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+<!---->
+<main>
+    <div class="container my-3">
+        <div class="card-body text-center">
+            <h4 class="card-title">Change log system</h4>
+        </div>
+        <button id="openModalButton" type="button" class="btn btn-success"  style=" margin-bottom: 10px; " (click)="openContentForm(contentModal)">
+            <i class="fas fa-plus"></i> Add a new List
+        </button>
+        <div class="card">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Edit List</th>
+                        <!-- <th scope="col">list info</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let content of contentData">
+                        <th scope="row">{{ content.ContentId }}</th>
+                        <td>{{ content.ContentTitle }}</td>
+                        <td><span class="badge {{labelColor[content.ContentTypes.TypeColor]}}">{{ content.ContentTypes.TypeName }}</span></td>
+                        <td>{{ content.ContentDesc }}</td>
+                        <td>
+                            <a class="btn btn-sm btn-primary" style=" color: #fff; " (click)="openModal(contentModal, content)"><i
+                                    class="far fa-edit"></i> edit</a>
+                            <a class="btn btn-sm btn-danger" style=" color: #fff; " (click)="deleteContent(content)"><i class="fas fa-trash-alt"></i> delete</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+<!---->
+
+<!---->
+<footer>
+    <div class="container bg-info p-3" style=" color: #fff; text-align: center; ">© 2020 - Kovai.co</div>
+</footer>
+
+<ng-template #contentModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">
+            Change log system details
+        </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <!-- <div class="card-body text-center">
+            <h4 class="card-title">Change log system details</h4>
+            <p class="card-text">
+                With supporting text below as a natural lead-in to additional
+                content.
+            </p>
+        </div> -->
+        <div class="card col-12 my-2 p-3" style=" border: none; ">
+            <form #contentForm="ngForm" (ngSubmit)="onSubmit(contentForm)">
+                <div class="form-group">
+                    <label for="Title">Title</label>
+                    <input type="text" [(ngModel)]="popContentData.ContentTitle" #ContentTitle="ngModel"
+                        class="form-control" name="ContentTitle" id="listname" placeholder="Enter your Title" required />
+                </div>
+                <div class="form-group">
+                    <label for="Type">Type</label>
+                    <select [(ngModel)]="popContentData.ContentType" name="ContentType" required style=" border-color: #ced4da; width: 100%; height: 38px; border-radius: 4px; padding-left: 10px;">
+                        <option value="0" disabled selected>Select Type</option>
+                        <option *ngFor="let type of typeData" [value]="type.TypeId"> 
+                            {{ type.TypeName }} - {{type.TypeColor}}
+                        </option>
+                    </select>
+                </div>                
+                <div class="form-group">
+                    <label for="Description">Description</label>
+                    <textarea  [(ngModel)]="popContentData.ContentDesc" #ContentDesc="ngModel"
+                        class="form-control" name="ContentDesc" id="datepicker" placeholder="Enter your Desccription" required rows="5" cols="30">                             
+                    </textarea>
+                </div>
+                <!-- <div class="form-group text-center">
+                    <button type="submit" class="btn btn-block btn-primary">
+                        Sign in
+                    </button>
+                </div> -->
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-outline-dark" (click)="onSubmit(contentForm)">
+            Save
+        </button>
+        <!-- <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">
+            Save
+        </button> -->
+    </div>
+</ng-template>
